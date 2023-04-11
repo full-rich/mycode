@@ -1,7 +1,0 @@
-Project Ideas:
-
-1) Enable user to input three destinations for a vacation within the U.S. Provide a weather forecast for each location using data extracted from the National Weather Service API.
-
-2) You are transported to the 19th century where you are competing with your fellow robber barons to build the longest railroad across the U.S. Compete in a turn-based game to build the longest railroad route.
-
-3) Write a program that converts a YAML file (e.g. Ansible playbook) and converts it to JSON. 
