@@ -24,9 +24,11 @@ def main():
                 "Itinerary 1" : "Los Angeles - Monterey - San Francisco",
                 "Itinerary 2" : "San Diego - Mammoth - Lake Tahoe"
             }
+            # nested loop to print out the itinerary and route
             for itinerary, route in calif_itin.items():
                 print(itinerary, route)
             print("Would you like to select a new state?")
+            # loop to determine if user wants to continue
             cont_loop = input("Y/N: ")
             cont_loop = cont_loop.lower()
             if cont_loop == "y":
