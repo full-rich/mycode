@@ -24,8 +24,8 @@ def main():
                 "Itinerary 1" : "Los Angeles - Monterey - San Francisco",
                 "Itinerary 2" : "San Diego - Mammoth - Lake Tahoe"
             }
-            for k, v in calif_itin.items():
-                print(k, v)
+            for itinerary, route in calif_itin.items():
+                print(itinerary, route)
             print("Would you like to select a new state?")
             cont_loop = input("Y/N: ")
             cont_loop = cont_loop.lower()
@@ -38,8 +38,8 @@ def main():
                 "Itinerary 1" : "Las Vegas - Reno - Lake Tahoe",
                 "Itinerary 2" : "Winnemuca - Reno - Las Vegas"
             }
-            for k, v in nev_itin.items():
-                print(k, v)
+            for itinerary, route in nev_itin.items():
+                print(itinerary, route)
             print("Would you like to select a new state?")
             cont_loop = input("Y/N: ")
             cont_loop = cont_loop.lower()
@@ -52,8 +52,8 @@ def main():
                 "Itinerary 1" : "Baker City - Portland - Medford",
                 "Itinerary 2" : "Burns - Klamath Falls - Medford"
             }
-            for k,v in or_itin.items():
-                print(k, v)
+            for itinerary, route in or_itin.items():
+                print(itinerary, route)
             print("Would you like to select a new state?")
             cont_loop = input("Y/N: ")
             cont_loop = cont_loop.lower()
