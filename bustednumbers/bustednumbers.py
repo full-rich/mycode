@@ -5,7 +5,6 @@ import random
 
 def main():
     num= random.randint(1,100)
-
     rounds= 0
     guess= ""
 
