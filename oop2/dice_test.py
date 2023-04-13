@@ -7,13 +7,14 @@ Creating a simple dice program utilizing classes."""
 from cheatdice import Player
 from cheatdice import Cheat_Swapper
 from cheatdice import Cheat_Loaded_Dice
+from cheatmulligan import Cheat_Mulligan
 
 def main():
     """run-time code"""
 
-    # create two cheater objects
+    # create three cheater objects
     cheater1 = Cheat_Swapper() # ability is to change 3rd dice roll to 6
-    cheater2 = Cheat_Loaded_Dice() # increase all rolls by +1 provided they are < 6
+    cheater2 = Cheat_Mulligan() # increase all rolls by +1 provided they are < 6
 
     # both players take turns
     cheater1.roll()
