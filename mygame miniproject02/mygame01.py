@@ -11,6 +11,7 @@ def showInstructions():
     Commands:
         go [direction]
         get [item]
+        drop [item]
         Get to the Garden with a key and a potion to win! Avoid the monsters! Commands include go direction and get item.''')
 
 def showStatus():
@@ -113,12 +114,18 @@ while True:
         # create a list of items in the current room
         currentRoom_items = rooms[currentRoom]['item']
 
-        if move[1] in currentRoom_items:
-            #room_item_list = rooms[currentRoom]['item']
-            #item_index_loc = room_item_list.index[move[1]]
-            inventory = inventory.remove(move[1])
-            print(inventory)
+
+        # check for item in currentRoom_items
+        if move[1] in inventory:
+            
+            item_index_loc = inventory.index(move[1])
+
+            # pop the move[1] item out of the inventory       
+            pop_item = inventory.pop(item_index_loc)
             print(move[1] + ' dropped!')
+
+            # place the item where dropped
+            rooms[currentRoom]['item'].append(move[1])
 
 if __name__ == "__main__":
     main()  
