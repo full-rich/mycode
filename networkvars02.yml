@@ -1,0 +1,22 @@
+---
+- name: Network Agnostic Playbook 
+  hosts: aristaswitchessecure
+  gather_facts: no
+  
+  vars:
+    ansible_ssh_pass: alta3
+    dnsserver: "8.8.8.8"
+  
+  tasks: 
+  - name: CONFIGURE DNS 
+    cli_config: 
+      config: ip name-server {{ dnsserver }}
+
+  - name: CHECK CONFIGURATION 
+    cli_command: 
+      command: show run | i ip name-server 
+    register: results 
+
+  - name: PRINT OUTPUT TO SCREEN 
+    debug: 
+      var: results.stdout
