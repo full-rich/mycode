@@ -12,7 +12,9 @@ def showInstructions():
         go [direction]
         get [item]
         drop [item]
-        Get to the Garden with a key and a potion to win! Avoid the monsters! Commands include go direction and get item.''')
+        Commands include go direction and get item.
+        There is a secret passageway in one of the rooms.
+        If you find the secret passageway, you can go into the chamber and find a special item!''')
 
 def showStatus():
     """determine the current status of the player"""
@@ -34,21 +36,32 @@ rooms = {
             'Hall' : {
                 'south' : 'Kitchen',
                 'east' : 'Dining Room',
-                'item' : ['key', 'dinosaur']
+                'item' : ['key', 'dinosaur'],
+                'secret passageway' : False
             },
 
             'Kitchen' : {
                 'north' : 'Hall',
-                'item' : ['knife', 'monster']
+                'item' : ['knife', 'monster'],
+                'secret passageway' : False
             },
             'Dining Room' : {
                 'west' : 'Hall',
                 'south' : 'Garden',
-                'item' : ['table', 'model train']                    
+                'item' : ['table', 'model train'],
+                'secret passageway' : True
             },
             'Garden' : {
                 'north' : 'Dining Room',
-                'item' : ['dolph lundgren statue', 'chainsaw']
+                'item' : ['dolph lundgren statue', 'chainsaw'],
+                'secret passageway' : False
+            },
+            'Chamber' : {
+                'south' : 'Dining Room',
+                'north' : 'Dining Room',
+                'east' : 'Dining Room',
+                'west' : 'Dining Room',
+                'item' : ['golden ticket']
             }
         }
 
@@ -76,11 +89,18 @@ while True:
 
     #if they type 'go' first
     if move[0] == 'go':
-        #check that they are allowed wherever they want to go
-        if move[1] in rooms[currentRoom]:
+        #check that they are allowed wherever they want to go and create exception for secret passageway
+        if move[1] in rooms[currentRoom] and move[1] != 'secret passageway':
             #set the current room to the new room
             currentRoom = rooms[currentRoom][move[1]]
-        # if they aren't allowed to go that way:
+        
+        # check for secret passageway
+        elif move[1] == 'secret passageway' and currentRoom != 'Chamber':
+            # check for secret passageway in currentRoom
+            if rooms[currentRoom]['secret passageway'] == True:
+                currentRoom = 'Chamber'                
+        
+        # if they aren't allowed to go that way:                      
         else:
             print('You can\'t go that way!')
 
@@ -106,26 +126,27 @@ while True:
             print('Can\'t get ' + move[1] + '!')
 
     # if they type 'drop' first
-    if move[0] == 'drop':
-        # make two checks:
-        # 1. if the current room contains an item
-        # 2. if the item in the room matches the item the player wishes to drop
 
-        # create a list of items in the current room
-        currentRoom_items = rooms[currentRoom]['item']
+        if move[0] == 'drop':
+            # make two checks:
+            # 1. if the current room contains an item
+            # 2. if the item in the room matches the item the player wishes to drop
+
+            # create a list of items in the current room
+            currentRoom_items = rooms[currentRoom]['item']
 
 
-        # check for item in currentRoom_items
-        if move[1] in inventory:
-            
-            item_index_loc = inventory.index(move[1])
+            # check for item in currentRoom_items
+            if move[1] in inventory:
+                
+                item_index_loc = inventory.index(move[1])
 
-            # pop the move[1] item out of the inventory       
-            pop_item = inventory.pop(item_index_loc)
-            print(move[1] + ' dropped!')
+                # pop the move[1] item out of the inventory       
+                pop_item = inventory.pop(item_index_loc)
+                print(move[1] + ' dropped!')
 
-            # place the item where dropped
-            rooms[currentRoom]['item'].append(move[1])
+                # place the item where dropped
+                rooms[currentRoom]['item'].append(move[1])
 
 if __name__ == "__main__":
     main()  
