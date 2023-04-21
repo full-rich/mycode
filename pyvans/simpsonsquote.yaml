@@ -1,0 +1,13 @@
+---
+- name: Playbook to create Simpsons file
+  hosts: localhost
+  gather_facts: false
+
+  vars:
+    simpson: "{{ lookup('url', 'https://thesimpsonsquoteapi.glitch.me/quotes') }}"
+
+  tasks:        
+    - name: use copy to create a file
+      copy:
+        content: "{{ simpson[0].quote }} \n {{ simpson[0].character }} \n"
+        dest: "simpsons-ans.txt"
