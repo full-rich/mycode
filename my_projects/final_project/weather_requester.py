@@ -2,12 +2,12 @@
 """application to provide weather forecast for user-inputted locations"""
 
 # import tools
-from geopy.geocoders import Nominatim
 import requests
 from pprint import pprint
 
 def get_lat_lon(city_input, state_input):
-
+    """provides latitude and longitude for location"""
+    
     ## mykey is our Bing maps key
     with open("bingapikey.txt", "r") as mykeyfile:
         readmykeyfile = mykeyfile.read()
@@ -59,7 +59,9 @@ def get_nws_fc(loc_lat_trunc, loc_lon_trunc):
     nws_return_fc_output = nws_return_forecast['properties']['periods']
     
     with open("nws_return_fc_output.txt", "w") as nws_return_fc:
-
+        
+        # print which NWS city and NWS state were forecasted to provide transparency to the user
+        print(f"NWS forecast city: ")
         # iterate through each period
         for period in range(len(nws_return_fc_output)):
             nws_return_fc.write(f"{nws_return_fc_output[period]['name']}: {nws_return_fc_output[period]['detailedForecast']} '\n'")
@@ -67,6 +69,42 @@ def get_nws_fc(loc_lat_trunc, loc_lon_trunc):
 
 def main():
     
+    """trip_dict = {
+            'trip nights'     : 0,
+            'modify trip'     : True,
+            'overnight stops' : {
+                                    1 : {
+                                            'city'   : '',
+                                            'state'  : '',
+                                            'lat'    : 0.0000,
+                                            'lon'    : 0.0000,
+                                            'day'    : {
+                                                            1 : {
+                                                                'day forecast'   : '',
+                                                                'night forecast' : ''
+                                                            }
+                                            }
+                                    }
+            }
+        }
+
+    try:
+        vac_nights = int(input("How many nights will you be on your road trip (1-5 days)? --> "))
+
+    except ValueError as verr:
+                        print("Please enter a value between 1-5.")
+    
+    else:
+                        min_trip_duration = 1
+                        max_trip_duration = 5
+                        if trip_nights > max_trip_duration or trip_nights < min_trip_duration:
+                            print("Please enter a value between 1-5")
+                        else:
+                            break
+    
+    trip_dict['trip nights'] == vac_nights"""
+
+
 
     while True:
 
@@ -124,6 +162,7 @@ def main():
             loop_var_ok = ('y', 'no', 'yes', 'n')
 
             if loop_var == 'no' or loop_var == 'n':
+                new_report = False
                 break
             elif loop_var not in loop_var_ok:
                 print("That's not a valid response. Please enter yes, no, y, or n.")
