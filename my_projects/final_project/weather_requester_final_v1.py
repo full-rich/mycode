@@ -1,8 +1,10 @@
 #!/usr/bin/python3
-"""application to provide weather forecast for user-inputted locations refactored"""
+"""application to provide weather forecast for user-inputted locations"""
 
+import re
 import requests
 import csv
+import os
 from pprint import pprint
 from random import randint
 from time import sleep
@@ -74,7 +76,7 @@ class Itinerary:
             for url_index in range(len(url_list)):
                 url = url_list[url_index]
                 loc_res = requests.get(url, headers=headers).json()
-                sleep(randint(3,7))
+                sleep(randint(1,5))
                 loc_res_list.append(loc_res)            
                 
                 loc_res_admin_dist = loc_res['resourceSets'][0]['resources'][0]['address']['adminDistrict']
@@ -147,7 +149,7 @@ def get_fc_urls():
             'User-Agent': 'dcb-weather-requester',
             'From': '{darrinbliler@gmail.com}'
         }    
-
+    
     with open("nws_grid_urls.txt", "r") as nws_grid_urls:
 
         # place urls into a list
@@ -161,7 +163,7 @@ def get_fc_urls():
         for item in range(len(nws_urls)):
             response = nws_urls[item]
             nws_request = requests.get(response, headers=headers).json()
-            sleep(randint(3,7))
+            sleep(randint(1,5))
             nws_response.append(nws_request)
         
         # create a new list to hold the first dictionary extract
@@ -170,7 +172,7 @@ def get_fc_urls():
         # extract properties section from request dictionary (grid url lives a couple levels deep)
         for item in range(len(nws_response)):
             properties = nws_response[item].get('properties')
-            sleep(randint(3,7))
+            sleep(randint(1,5))
             response_slice.append(properties)
 
         # create a new list to hold the url itself
@@ -182,7 +184,7 @@ def get_fc_urls():
             fc_urls.append(links)
 
     # write forecast urls to .txt
-    with open("nws_fc_urls.txt", "w") as nws_fc_urls:
+    with open("nws_fc_urls.txt", "w", newline = '') as nws_fc_urls:
         index = 0
         grid_url = len(fc_urls)
         while index < grid_url:
@@ -212,7 +214,7 @@ def get_fc():
     for item in range(len(nws_urls)):
         response = nws_urls[item]
         nws_request = requests.get(response, headers=headers).json()
-        sleep(randint(3,7))
+        sleep(randint(1,5))
         nws_response.append(nws_request)
     
     # create a new list to hold the first parsed dictionary extract
@@ -231,22 +233,85 @@ def get_fc():
         periods = response_slice[item].get('periods')
         fc.append(periods)
 
-    pprint(fc)
+    # pare down object to discrete information
+
+    # write forecast to txt
+    with open("nws_fc.txt", "w", newline = '') as nws_fc:
+        index = 0
+        fc_length = len(fc)
+        while index < fc_length:
+            nws_fc.write(f"{fc[index]}\n")
+            index += 1
+
+    """inserting block of code to output forecast as stopgap due to not being able to pass object or properly read/write from text. 
+    REMOVE as feature update in the future"""
+
+    name_list = []
+    detailed_forecast_list = []
+
+    for item in range(len(fc)):
+        
+        list = fc[item]
+
+        for i in range(len(list)):
+            # get list of forecast names (i.e. tonight, tomorrow, Sunday, etc.)
+            name = list[i]['name']
+            name_list.append(name)
+
+            detailed_forecast = list[i]['detailedForecast']
+            detailed_forecast_list.append(detailed_forecast)
+
+        pprint(name_list)
+        pprint(detailed_forecast_list)
+    
+
+
+"""def custom_fc():
+
+    with open("input_table.txt", "r", ) as input_table:
+        
+        # place user input into list
+        user_input = input_table.readlines()
+        user_input = [l.rstrip('\n') for l in user_input]
+        user_input = [l.replace('"', "") for l in user_input]
+
+
+    with open("nws_fc.txt", "r", newline = '') as fc:
+        
+        lines = fc.readlines()
+        pprint(lines)
+        lines = [lines.strip().strip('"') for line in lines]
+        lines = [lines.strip().strip('["]') for line in lines]
+        lines = [lines.strip().strip('"') for line in lines]
+        lines = [lines.strip().strip('"') for line in lines]
+        #lines = [line.strip().strip('"') for line in lines]
+        #lines = [line.strip().strip('"')]        
+
+        pprint(lines)"""     
+
+
 
 
 def main():
 
+    # call class Itinerary
     itinerary1 = Itinerary()
 
+    # execute fuction enabling user input of itinerary
     itinerary1.input_itin()
 
+    # execute function to validate inputted itinerary based on maps data
     itinerary1.validate_itin()       
 
+    # execute function to get grid urls for NWS API
     get_grids()
 
+    # execute function to get forecast URLs for NWS API grids
     get_fc_urls()
 
+    # get forecast for each location
     get_fc()
+
     
 
 if __name__ == '__main__':
